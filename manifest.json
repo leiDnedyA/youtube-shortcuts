@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Search Focus",
+  "version": "1.0.0",
+  "description": "Focus the YouTube search input with a keyboard shortcut.",
+  "permissions": ["scripting", "tabs"],
+  "host_permissions": ["https://www.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "focus-youtube-search": {
+      "suggested_key": {
+        "default": "Alt+K",
+        "mac": "Alt+K"
+      },
+      "description": "Focus YouTube search bar"
+    }
+  }
+}
