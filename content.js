@@ -1,12 +1,13 @@
+const SEARCH_SELECTORS = [
+  '.yt-searchbox-input',        // your specified class
+  'input#search',               // common fallback
+  'input[name="search_query"]'  // extra fallback
+];
+
 // Try to find the search input by class, with fallbacks and a light retry if it's not in the DOM yet.
 function focusSearch() {
-  const candidates = [
-    '.yt-searchbox-input',        // your specified class
-    'input#search',               // common fallback
-    'input[name="search_query"]'  // extra fallback
-  ];
   let input = null;
-  for (const sel of candidates) {
+  for (const sel of SEARCH_SELECTORS) {
     input = document.querySelector(sel);
     if (input) break;
   }
@@ -27,7 +28,7 @@ function focusWithRetry() {
       observer.disconnect();
     }
   });
-  observer.observe(document.documentElement || document.body, {childList: true, subtree: true});
+  observer.observe(document.documentElement || document.body, { childList: true, subtree: true });
 
   // Safety stop after 3 seconds
   setTimeout(() => observer.disconnect(), 3000);
@@ -51,4 +52,11 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     focusWithRetry();
   }
-}, {capture: true});
+}, { capture: true });
+
+window.onload = () => {
+  const searchInput = document.querySelector(SEARCH_SELECTORS[0]);
+  setTimeout(() => {
+    searchInput.placeholder = 'Search (ctrl + k)';
+  }, 300);
+}
